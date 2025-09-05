@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Silahkan Masukan NIP Anda</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1350&q=80') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: rgba(0,0,0,0.7);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0px 4px 15px rgba(0,0,0,0.5);
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    input {
+      background: #fff;
+      color: #000;
+    }
+    button {
+      background: #28a745;
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #218838;
+    }
+    .card {
+      background: #222;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 15px;
+    }
+    .error {
+      color: #ff6b6b;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🔎 Cari Data Pegawai</h2>
+    <input type="text" id="nipInput" placeholder="Silahkan Masukan NIP Anda">
+    <button onclick="cariData()">Cari</button>
+    <div id="hasil"></div>
+  </div>
+
+  <script>
+    const SHEET_ID = "1FkQYzMzK1GezIYbKnRME8tm6j9tZKPg1PfpU30yz36o";
+    const SHEET_NAME = "SRIKANDI"; // ganti sesuai nama tab di sheet kamu
+    const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${SHEET_NAME}`;
+
+    let database = [];
+
+    // Ambil data dari Google Sheet
+    fetch(URL)
+      .then(res => res.text())
+      .then(data => {
+        const json = JSON.parse(data.substr(47).slice(0, -2));
+        const rows = json.table.rows;
+        rows.forEach(r => {
+          if (r.c[0] && r.c[1] && r.c[2]) {
+            database.push({
+              nip: r.c[0].v,
+              username: r.c[1].v,
+              password: r.c[2].v
+            });
+          }
+        });
+      })
+      .catch(err => {
+        document.getElementById("hasil").innerHTML = "<p class='error'>⚠️ Gagal mengambil data dari Google Sheet.</p>";
+      });
+
+    funct
