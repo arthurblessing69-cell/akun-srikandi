@@ -2,89 +2,109 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Silahkan Masukan NIP Anda</title>
+  <title>Masukan NIP Anda</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      background: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1350&q=80') no-repeat center center fixed;
-      background-size: cover;
-      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(-45deg, #2980b9, #6dd5fa, #fbc531, #9b59b6);
+      background-size: 400% 400%;
+      animation: gradientMove 15s ease infinite;
     }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
     .container {
-      max-width: 500px;
-      margin: auto;
-      background: rgba(0,0,0,0.7);
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0px 4px 15px rgba(0,0,0,0.5);
-    }
-    input, button {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-    }
-    input {
-      background: #fff;
-      color: #000;
-    }
-    button {
-      background: #28a745;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 40px 30px;
+      border-radius: 16px;
+      box-shadow: 0px 8px 24px rgba(0,0,0,0.3);
+      text-align: center;
+      width: 350px;
       color: #fff;
-      cursor: pointer;
-      font-weight: bold;
+      animation: fadeIn 2s ease forwards;
     }
-    button:hover {
-      background: #218838;
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-    .card {
-      background: #222;
-      padding: 15px;
+
+    .logo {
+      margin-bottom: 25px;
+    }
+
+    .logo img {
+      max-width: 90px;
+      margin-bottom: 10px;
+      animation: floatLogo 3s ease-in-out infinite;
+    }
+
+    @keyframes floatLogo {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    .logo h2 {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      margin: 15px 0;
+      border: none;
       border-radius: 10px;
-      margin-top: 15px;
+      font-size: 14px;
     }
-    .error {
-      color: #ff6b6b;
-      font-weight: bold;
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #2980b9, #6dd5fa);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, #2573a7, #57c2ef);
+      transform: translateY(-2px);
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>🔎 Cari Data Pegawai</h2>
-    <input type="text" id="nipInput" placeholder="Silahkan Masukan NIP Anda">
-    <button onclick="cariData()">Cari</button>
-    <div id="hasil"></div>
+    <div class="logo">
+      <img src="logo.png" alt="Logo SRIKANDI">
+      <h2>SRIKANDI</h2>
+    </div>
+    <form>
+      <input type="text" placeholder="Masukkan NIP Anda">
+      <button type="submit">Lanjut</button>
+    </form>
   </div>
-
-  <script>
-    const SHEET_ID = "1FkQYzMzK1GezIYbKnRME8tm6j9tZKPg1PfpU30yz36o";
-    const SHEET_NAME = "SRIKANDI"; // ganti sesuai nama tab di sheet kamu
-    const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${SHEET_NAME}`;
-
-    let database = [];
-
-    // Ambil data dari Google Sheet
-    fetch(URL)
-      .then(res => res.text())
-      .then(data => {
-        const json = JSON.parse(data.substr(47).slice(0, -2));
-        const rows = json.table.rows;
-        rows.forEach(r => {
-          if (r.c[0] && r.c[1] && r.c[2]) {
-            database.push({
-              nip: r.c[0].v,
-              username: r.c[1].v,
-              password: r.c[2].v
-            });
-          }
-        });
-      })
-      .catch(err => {
-        document.getElementById("hasil").innerHTML = "<p class='error'>⚠️ Gagal mengambil data dari Google Sheet.</p>";
-      });
-
-    funct
+</body>
+</html>
